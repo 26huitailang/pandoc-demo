@@ -1,16 +1,20 @@
 FROM pandoc/core:2.16.2
 
 ENV PATH=/usr/local/texlive/bin/x86_64-linuxmusl:$PATH
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 RUN mkdir /tmp/install-tl-unx
-
 WORKDIR /tmp/install-tl-unx
-
 COPY texlive.profile .
-
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
 # Install TeX Live
-RUN apk --no-cache add perl wget \
+RUN apk --no-cache add perl \
+	wget \
+	nodejs \
+	npm \
+	chromium \
+	font-noto \
 	xz tar && \
 	wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz && \
 	tar --strip-components=1 -xvf install-tl-unx.tar.gz && \
@@ -18,7 +22,9 @@ RUN apk --no-cache add perl wget \
 	apk del perl wget xz tar && \
 	cd && rm -rf /tmp/install-tl-unx
 
-RUN apk --no-cache add font-noto
+# filters
+RUN PUPPETEER_SKIP_DOWNLOAD='true' npm install --global mermaid-filter
+
 COPY msyh.ttf /usr/share/fonts/truetype/
 RUN fc-cache -fv
 WORKDIR /data
@@ -36,12 +42,9 @@ RUN tlmgr install xecjk filehook unicode-math ucharcat pagecolor babel-german ly
 RUN tlmgr install awesomebox fontawesome5
 # packages only needed for some examples (example boxes-with-pandoc-latex-environment-and-tcolorbox)
 RUN tlmgr install tcolorbox pgf etoolbox environ trimspaces
-# RUN tlmgr install \
-# 	adjustbox babel-german background bidi collectbox \
-# 	csquotes everypage filehook footmisc footnotebackref framed fvextra \
-# 	letltxmacro ly1 mdframed mweights needspace pagecolor sourcecodepro sourcesanspro \
-# 	titling ucharcat ulem unicode-math upquote xecjk xurl zref && \
-# 	tlmgr init-usertree && \
+
+RUN mkdir /config
+COPY .puppeteer.json /config/.puppeteer.json
 
 # post
 RUN apk del wget && \

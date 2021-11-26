@@ -4,5 +4,5 @@ build:
 test:
 	docker run --rm --volume "`pwd`:/data" --entrypoint="/data/script.sh" mypandoc:$(TAG)
 publish:
-	docker tag mypandoc:$(TAG) peterchen0802/mypandoc:latest
+	docker tag mypandoc:latest peterchen0802/mypandoc:$(TAG)
 	docker push peterchen0802/mypandoc:$(TAG)
