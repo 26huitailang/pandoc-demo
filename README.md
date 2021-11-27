@@ -6,4 +6,6 @@
 
 ## todo
 
-- [ ] emoji support
+- [x] support relative img path
+- [x] support mermaid
+- [x] support emoji

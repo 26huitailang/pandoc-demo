@@ -25,10 +25,6 @@ RUN apk --no-cache add perl \
 # filters
 RUN PUPPETEER_SKIP_DOWNLOAD='true' npm install --global mermaid-filter
 
-COPY msyh.ttf /usr/share/fonts/truetype/
-RUN fc-cache -fv
-WORKDIR /data
-
 # Install basic collection and additional packages
 RUN apk --no-cache add perl wget && \
 	tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet && \
@@ -44,7 +40,11 @@ RUN tlmgr install awesomebox fontawesome5
 RUN tlmgr install tcolorbox pgf etoolbox environ trimspaces
 
 RUN mkdir /config
+COPY msyh.ttf /usr/share/fonts/truetype/
+COPY DejaVu-Sans.ttf /usr/share/fonts/truetype/
 COPY .puppeteer.json /config/.puppeteer.json
+RUN fc-cache -fv
+WORKDIR /data
 
 # post
 RUN apk del wget && \

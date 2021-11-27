@@ -16,5 +16,6 @@ pandoc ./docs/*.md \
 	--listings \
 	--number-sections \
 	--pdf-engine "xelatex" \
+	-V mainfont="DejaVu Sans" \
 	-V CJKmainfont="Microsoft YaHei" \
-	-M date=$disdate
+	-M date=$disdate -M emoji=noto-emoji
