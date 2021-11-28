@@ -2,7 +2,7 @@
 
 mermaid test
 
-```mermaid
+```{.mermaid format=svg}
 gantt
     dateFormat  YYYY-MM-DD
     title       Adding GANTT diagram functionality to mermaid

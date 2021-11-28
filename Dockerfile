@@ -46,6 +46,8 @@ COPY .puppeteer.json /config/.puppeteer.json
 RUN fc-cache -fv
 WORKDIR /data
 
+RUN apk --no-cache add librsvg
+
 # post
 RUN apk del wget && \
 	rm -rf /var/cache/apk/*
