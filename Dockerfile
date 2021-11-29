@@ -5,6 +5,7 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 RUN mkdir /tmp/install-tl-unx
 WORKDIR /tmp/install-tl-unx
+# textlive install config
 COPY texlive.profile .
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
@@ -39,13 +40,18 @@ RUN tlmgr install awesomebox fontawesome5
 # packages only needed for some examples (example boxes-with-pandoc-latex-environment-and-tcolorbox)
 RUN tlmgr install tcolorbox pgf etoolbox environ trimspaces
 
-RUN mkdir /config
+# font
 COPY msyh.ttf /usr/share/fonts/truetype/
 COPY DejaVu-Sans.ttf /usr/share/fonts/truetype/
-COPY .puppeteer.json /config/.puppeteer.json
 RUN fc-cache -fv
+
+# use puppeteer to support mermaid
+RUN mkdir /config
+COPY .puppeteer.json /config/.puppeteer.json
+
 WORKDIR /data
 
+# support mermaid format=svg
 RUN apk --no-cache add librsvg
 
 # post
