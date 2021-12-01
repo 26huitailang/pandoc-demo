@@ -52,7 +52,36 @@ COPY .puppeteer.json /config/.puppeteer.json
 WORKDIR /data
 
 # support mermaid format=svg
-RUN apk --no-cache add librsvg
+RUN apk --no-cache add librsvg git
+RUN git config --global http.version HTTP/1.1
+# RUN npm install --global pandoc-emoji-filter
+
+#
+# emojis support for latex
+# https://github.com/mreq/xelatex-emoji
+#
+ARG TEXMF=/root/texmf/tex/latex
+ARG EMOJI_DIR=/tmp/twemoji
+COPY twemoji.tar /tmp/
+RUN tar -xf /tmp/twemoji.tar -C /tmp/ && rm -f /tmp/twemoji.tar
+RUN mkdir -p ${TEXMF}
+COPY xelatex-emoji ${TEXMF}/xelatex-emoji
+COPY newunicodechar ${TEXMF}
+# RUN git clone --single-branch --depth=1 --branch gh-pages https://github.com/twitter/twemoji.git $EMOJI_DIR && \
+# git clone --single-branch --branch images https://github.com/daamien/xelatex-emoji.git && \
+# fetch xelatex-emoji
+RUN ls ${TEXMF} && cd ${TEXMF} && \
+	# convert twemoji SVG files into PDF files
+	cp -r $EMOJI_DIR/2/svg xelatex-emoji/images && \
+	cd xelatex-emoji/images && \
+	ls -al ${TEXMF}/xelatex-emoji/bin && \
+	${TEXMF}/xelatex-emoji/bin/convert_svgs_to_pdfs ./*.svg && \
+	# clean up
+	rm -f *.svg && \
+	rm -rf ${EMOJI_DIR} && \
+	# update texlive
+	cd ${TEXMF} && \
+	texhash
 
 # post
 RUN apk del wget && \

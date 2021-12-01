@@ -8,4 +8,4 @@
 
 - [x] support relative img path
 - [x] support mermaid
-- [x] support emoji
+- [x] support emoji: twemoji
