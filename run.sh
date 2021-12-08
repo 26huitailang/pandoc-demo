@@ -1,1 +1,0 @@
-docker run --rm --volume "`pwd`:/data" --entrypoint="/data/script.sh" mypandoc:latest

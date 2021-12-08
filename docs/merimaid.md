@@ -34,3 +34,55 @@ gantt
     Add gantt diagram to demo page      :20h
     Add another diagram to demo page    :48h
 ```
+
+注意，这里使用svg格式，pandoc生成的图像缺失文字：
+
+```{.mermaid}
+gitGraph:
+options
+{
+    "nodeSpacing": 80,
+    "nodeRadius": 6
+}
+end
+commit
+branch dev
+checkout dev
+commit
+branch feat
+checkout feat
+commit
+commit
+commit
+checkout dev
+commit
+merge feat
+checkout master
+commit
+merge dev
+```
+
+```{.mermaid format=svg}
+gitGraph:
+options
+{
+    "nodeSpacing": 80,
+    "nodeRadius": 6
+}
+end
+commit
+branch dev
+checkout dev
+commit
+branch feat
+checkout feat
+commit
+commit
+commit
+checkout dev
+commit
+merge feat
+checkout master
+commit
+merge dev
+```
