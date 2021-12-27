@@ -86,3 +86,17 @@ checkout master
 commit
 merge dev
 ```
+
+```{.mermaid format=svg}
+sequenceDiagram
+    participant User
+    participant Client
+    participant Server
+    
+    User->>Client: input username/password
+    Client->>Server: GET /auth/pre?type=password
+    Server-->>Client: create session, include steps
+    Client->>Server:  POST /auth/password/verify
+    Server-->>Client: check and no next step auth
+    Client-->>User: Logged in successfully
+```
