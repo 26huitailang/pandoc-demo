@@ -92,7 +92,7 @@ sequenceDiagram
     participant User
     participant Client
     participant Server
-    
+
     User->>Client: input username/password
     Client->>Server: GET /auth/pre?type=password
     Server-->>Client: create session, include steps
