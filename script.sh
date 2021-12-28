@@ -6,8 +6,8 @@ mkdir -p ~/.pandoc/templates
 cp /data/eisvogel.latex ~/.pandoc/templates/
 curdate=`date +%Y%m%d%H%M`
 disdate=`date '+%Y-%m-%d'`
-filename="demo-"$curdate".pdf"
-echo $filename
+filename="demo.pdf"
+echo "building $filename"
 pandoc ./docs/*.md \
 	-o $filename \
 	--from markdown+rebase_relative_paths+emoji \
@@ -18,4 +18,4 @@ pandoc ./docs/*.md \
 	--pdf-engine "xelatex" \
 	-V mainfont="DejaVu Sans" \
 	-V CJKmainfont="Microsoft YaHei" \
-	-M date=$disdate -M emoji=noto-emoji
+	-M date=$disdate
